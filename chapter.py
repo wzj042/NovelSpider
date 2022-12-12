@@ -87,7 +87,7 @@ class Chapter:
         pass
     
     def __get_md5(self, url) -> str:
-        imgUrl = self.__baseUrl + '/toimg/data/' +imgUrl
+        imgUrl = self.__baseUrl + '/toimg/data/' +url
         response = requests.get(imgUrl)
         with open('temp.png','wb') as file_obj:
             file_obj.write(response.content)
@@ -229,18 +229,26 @@ class Chapter:
                 #     print("该章节内容不存在，已丢失或页面结构已更新")
                 #     return
             
+
                 self.__chapterContent = str(chapterText)
                 content = str(chapterText)
                 # print(content)
                 content = self.solveContext(content)
                 resSoup = BeautifulSoup(content,'lxml')
                 content = resSoup.get_text()
-                 
+                # 访问太快还是怎么样，反正资源妹拿到
+                if "Notice: Undefined index:" in content:
+                    self.connect()
+                    return
+
                 for ban in banText:
                     if ban in content:
                         print('发现广告*1')
                         content = content.replace(ban, '')
                 
+                # 将一长串换行替换为单行, 感觉这个方法有点呆 一般小说应该用不上这操作甚至有将排版弄混的风险
+                content = content.replace("\t\n","")
+                content = content.replace("\n\n\n","\n")
                 print(content)
 
                 path = 'novel\\'+self.author+'\\'
@@ -254,7 +262,7 @@ class Chapter:
                 path = path+self.novelTitle+'.txt'
 
                 file = open(path, 'a+', encoding='utf-8', newline='')
-                file.writelines(content)
+                file.write(content)
                 file.flush()
                 file.close()
                 file = None

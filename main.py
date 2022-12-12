@@ -2,7 +2,22 @@ from novel import Novel
 from chapter import Chapter
 import os
 novelList = [
-    'http://www.bz1111.xyz/30/30301/',
+    'http://www.bz1111.xyz/14/14735/',
+    'http://www.bz1111.xyz/14/14292/',
+    'http://www.bz1111.xyz/6/6548/',
+    'http://www.bz1111.xyz/7/7650/',
+    'http://www.bz1111.xyz/19/19998/',
+    'http://www.bz1111.xyz/19/19946/',
+    'http://www.bz1111.xyz/14/14233/',
+    'http://www.bz1111.xyz/10/10492/',
+    'http://www.bz1111.xyz/9/9149/',
+    'http://www.bz1111.xyz/8/8349/',
+    'http://www.bz1111.xyz/4/4409/',
+    'http://www.bz1111.xyz/2/2197/',
+    'http://www.bz1111.xyz/14/14884/',
+    'http://www.bz1111.xyz/1/1033/',
+    'http://www.bz1111.xyz/18/18337/',
+    'http://www.bz1111.xyz/4/4154/',
 ]
 
 def getNovel(url, overwride=False):
@@ -13,6 +28,10 @@ def getNovel(url, overwride=False):
     print(novelTilte)
     if not overwride:
         # 如果当前已存在文件则跳过
+        if novelAuthor is None:
+            novelAuthor = '不详'
+        if novelTilte is None:
+            novelTilte = '啥啊这'
         path = 'novel\\'+novelAuthor+'\\'+novelTilte+'.txt'
         if os.path.exists(path):
             print('文件已存在')
@@ -74,7 +93,9 @@ if __name__ == '__main__':
     for url in novelList:
         getNovel(url)
     
-    
+
+
+
     
 
 
