@@ -5,6 +5,10 @@
 ```bash
 ── adsolver.py		-- 自定义过滤广告文本
 ├── chapter.py		-- 章节爬取，图片爬取等方法
+├── chromedriver.exe -- 自动化测试时用的驱动
+├── config.ini		-- 配置文件
+├── novelList.txt	-- 分行传入要爬取的链接
+├── solveList.txt	-- 分行传入要替换为空的文本
 ├── img				-- 文字图片，不是必须的
    └── original		 -- 如果爬取的小说出现未匹配的字，调用获取图片方法，reverse.py将图片添加映射json，手动识别图片修改texts.json内容
       ├── 0117530724.png
@@ -24,7 +28,7 @@
 
 > 安装requirements.txt中对应的库
 >
-> 将要爬取的小说链接扔进main.py，直接开始运行
+> 将要爬取的小说链接扔进novelList.txt，然后运行main.py
 
 注意因为使用了selenium爬取所以需要下载与chrome浏览器匹配版本的chromedriver.exe
 
