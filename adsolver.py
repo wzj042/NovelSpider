@@ -1,5 +1,6 @@
 import os
 import configparser
+import re
 
 BASE_DIR = os.path.dirname(os.path.abspath('config.ini'))
 AUTO_SOLVE_TEXT = False
@@ -8,8 +9,29 @@ BAN_TEXT_LIST = []
 NOVEL_LIST = []
 DRIVER_URL = None
 
+def subReplace(reg, content, repDict) -> str:
+    pattern = re.compile(reg)
+    matchs = pattern.findall(content)
+    for line in matchs:
+        for r in repDict:
+            content = content.replace(line, re.sub(r, repDict[r], line))
+    return content
 # 处理匹配一下小说中的广告文本
 def solveAdText(content) -> str:
+
+    # 将分页的换行替换掉
+    symbol = '[…，、•！～。？]'
+    notEndSymbol = '[…，、•～]'
+    endSymbol = '[】！。？]'
+    cn = '[\u4e00-\u9fa5]'
+
+
+
+
+    content = subReplace(cn+'\n+\s*'+cn, content, {
+        '\n+\s*':''
+    })
+
     adCount = 0
     for ban in BAN_TEXT_LIST:
         if ban in content:
@@ -17,8 +39,23 @@ def solveAdText(content) -> str:
             print(f'处理文本*{adCount}')
             content = content.replace(ban, '')
 
-    # 格式化
-    content = content.replace("\n\n\n", "\n")
+    content = subReplace('[a-zA-Z]+\n+\s*[a-zA-Z]+', content, {
+        '\n+\s*':''
+    })
+    content = subReplace(notEndSymbol+'?'+'\n+\s*'+cn, content, {
+        '\n+\s*':''
+    })
+    content = subReplace(notEndSymbol+'?'+'\n+\s*'+endSymbol, content, {
+        '\n+\s*':''
+    })
+    content = subReplace(cn+'?'+'\n+\s*'+symbol, content, {
+        '\n+\s*':''
+    })
+    # 将替换后的空白行替换掉
+    
+    content = re.sub('\n{3,}\s','\n',content)
+    content = re.sub('\n\s{4}\n{2}','',content)
+    content = re.sub('\s{4}\n\s{4}','',content)
 
     return content
 
@@ -27,16 +64,18 @@ def solveAd():
     # 遍历小说列表替换广告, 这里不打算考虑加载上mb的文件，就不分块加载了
     for root, dirs, files in os.walk("novel", topdown=False):
         for name in files:
-            print(files)
-            content = ''
-            with open(f'{root}\{name}', 'r', encoding='utf-8') as f:
-                for line in f.readlines():
-                    content += line
-                f.close()
-            content = solveAdText(content)
-            with open(f'{root}\{name}', 'w', encoding='utf-8') as f:
-                f.write(content)
-                f.close()
+            if '_backup' not in name:
+                print(files)
+                content = ''
+                with open(f'{root}\{name}', 'r', encoding='utf-8') as f:
+                    for line in f.readlines():
+                        content += line
+                    f.close()
+                content = solveAdText(content)
+                with open(f'{root}\{name}', 'w', encoding='utf-8') as f:
+                # with open(f'{root}\{name}_backup', 'w', encoding='utf-8') as f:
+                    f.write(content)
+                    f.close()
 
     pass
 

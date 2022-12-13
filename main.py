@@ -5,8 +5,6 @@ from adsolver import solveAd, initConfg, BAN_TEXT_LIST, NOVEL_LIST, AUTO_SOLVE_T
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 
-# 分章节用的index
-index = 1
 # 输出目录结构时屏蔽的目录
 # 发现一开始写的测试例子忘记重构了，居然每章翻页都重新开一个driver，赶紧重构一下
 driver = None
@@ -28,8 +26,6 @@ def getNovel(url,driver=None, overwride=False):
             return
     for url in novel.chapterList.split('\n'):
         print('chapterUrl:', url)
-        global index
-        index += 1
         chapter = Chapter(url)
         chapter.setDriver(driver)
         chapter.BAN_TEXT_LIST = BAN_TEXT_LIST
@@ -122,6 +118,7 @@ if __name__ == '__main__':
     driver.close()
     if AUTO_SOLVE_TEXT:
         solveAd()
+
 
 
 

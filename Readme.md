@@ -38,6 +38,8 @@ chrome浏览器输入chrome://version查看版本
 
 chromedriver.exe放在chrome安装目录下,如C:\Program Files\Google\Chrome\Application\
 
+如果只是想要爬取使用的话
+
 ​     
 
 

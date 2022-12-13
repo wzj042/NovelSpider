@@ -14,7 +14,6 @@ class Chapter:
     __driver = None
     author = None
     novelTitle = None
-    chapterIndex = 1
     BAN_TEXT_LIST = []
     AUTO_SOLVE_TEXT = False
     # 定义多个参数并赋值None实现伪重载
@@ -198,9 +197,10 @@ class Chapter:
                     f'{self.__parseUrl}_{self.__index}.html')
             try:
                 # 保证加载完成
-                time.sleep(0.5)
+                time.sleep(0.3)
                 soup = BeautifulSoup(self.__driver.page_source, 'lxml')
                 novel_title = soup.h1.get_text()
+                print(novel_title)
                 # 需要分章节的时候可以用，但我懒得分
                 self.__chapterTitle = novel_title
 
@@ -230,7 +230,6 @@ class Chapter:
                 content = resSoup.get_text()
                 # 访问太快还是怎么样，反正资源妹拿到
                 if "Notice: Undefined index:" in content:
-                    self.__driver.close()
                     self.connect()
                     return
 
@@ -242,8 +241,10 @@ class Chapter:
                 
                 print(content)
 
-                if self.chapterIndex == 1:
-                    content = f'\n【第{self.__index}章】:{novel_title}\n\n' + content
+                if self.__index == 1:
+                    if self.__chapterTitle is None or len(self.__chapterTitle) == 0:
+                        self.__chapterTitle = '分卷阅读'
+                    content = f'\n【{self.__chapterTitle}】\n' + content
 
                 path = 'novel\\' + self.author + '\\'
 
