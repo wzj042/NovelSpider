@@ -1,7 +1,7 @@
 from novel import Novel
 from chapter import Chapter
 import os
-from adsolver import solveAd, initConfg, BAN_TEXT_LIST, NOVEL_LIST, AUTO_SOLVE_TEXT, DRIVER_URL
+from adsolver import solveAd, initConfg, BAN_TEXT_LIST, NOVEL_LIST, AUTO_SOLVE_TEXT, DRIVER_URL, USE_MOBILE_UA, MOBILE_UA, PC_UA
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 
@@ -10,6 +10,7 @@ from selenium.webdriver.chrome.service import Service
 driver = None
 def getNovel(url,driver=None, overwride=False):
     novel = Novel(url)
+    novel.useMobileUa = USE_MOBILE_UA
     novel.connect()
     novelTilte = novel.title
     novelAuthor = novel.author
@@ -29,7 +30,6 @@ def getNovel(url,driver=None, overwride=False):
         chapter = Chapter(url)
         chapter.setDriver(driver)
         chapter.BAN_TEXT_LIST = BAN_TEXT_LIST
-        chapter.AUTO_SOLVE_TEXT = AUTO_SOLVE_TEXT
         chapter.chapterIndex = index
         chapter.novelTitle = novelTilte
         chapter.author = novelAuthor
@@ -88,8 +88,10 @@ def print_folder_tree(path, depth=0):
 def getDriver() -> webdriver:
     driver = None
     try:
+        options = webdriver.ChromeOptions()
+        options.add_argument('user-agent=' + MOBILE_UA if USE_MOBILE_UA else PC_UA)
         service = Service(DRIVER_URL)
-        driver = webdriver.Chrome(service=service)
+        driver = webdriver.Chrome(service=service, options= options)
         driver.minimize_window()
     except:
         print("""加载chromdriver.exe驱动失败，可以尝试下载与chrome浏览器匹配版本
@@ -108,6 +110,7 @@ if __name__ == '__main__':
     BAN_TEXT_LIST =  config['BAN_TEXT_LIST']
     NOVEL_LIST =  config['NOVEL_LIST']
     DRIVER_URL =  config['DRIVER_URL']
+    USE_MOBILE_UA =  config['USE_MOBILE_UA']
 
     driver = getDriver()
 

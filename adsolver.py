@@ -4,11 +4,13 @@ import re
 
 BASE_DIR = os.path.dirname(os.path.abspath('config.ini'))
 AUTO_SOLVE_TEXT = False
+USE_MOBILE_UA = False
 # 可以自己手动加上要屏蔽的广告
 BAN_TEXT_LIST = []
 NOVEL_LIST = []
 DRIVER_URL = None
-
+MOBILE_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 12_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16A366 MicroMessenger/6.7.3(0x16070321) NetType/WIFI Language/zh_CN'
+PC_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
 def subReplace(reg, content, repDict) -> str:
     pattern = re.compile(reg)
     matchs = pattern.findall(content)
@@ -86,6 +88,7 @@ def initConfg() -> dict:
     novel_list_path = config.get('parser_config', 'novel_list_path')
     DRIVER_URL = config.get('parser_config', 'driver_path')
     AUTO_SOLVE_TEXT = config.getboolean('parser_config', 'auto_solve_text')
+    USE_MOBILE_UA = config.getboolean('parser_config', 'use_mobile_ua')
     solver_list_path = config.get('solver_config', 'solve_text_path')
     NOVEL_LIST = []
 
@@ -103,7 +106,8 @@ def initConfg() -> dict:
         'AUTO_SOLVE_TEXT': AUTO_SOLVE_TEXT,
         'NOVEL_LIST': NOVEL_LIST,
         'BAN_TEXT_LIST': BAN_TEXT_LIST,
-        'DRIVER_URL' :DRIVER_URL
+        'DRIVER_URL' :DRIVER_URL,
+        'USE_MOBILE_UA':USE_MOBILE_UA
     }
 
 

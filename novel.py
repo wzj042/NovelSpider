@@ -2,10 +2,11 @@ import requests
 from requests.adapters import HTTPAdapter
 import re
 from bs4 import BeautifulSoup
-
+from adsolver import PC_UA, MOBILE_UA
 """
     小说实体类，传入链接解析相关小说信息
 """
+
 class Novel:
     __novelId = None
     __novelType = None
@@ -19,6 +20,7 @@ class Novel:
     wordCount = 0
     pageCount = 0
     baseUrl = None
+    useMobileUa = False
 
     """
         初始化
@@ -40,7 +42,9 @@ class Novel:
     def __testUrl(self) -> str:
         req = requests.Session()
         req.mount('http://', HTTPAdapter(max_retries=3))
-        resp = req.get(url=self.__inputUrl, timeout=1618)
+        resp = req.get(url=self.__inputUrl, timeout=1618, headers={
+            'user-agent' : MOBILE_UA if self.useMobileUa else PC_UA
+        })
         res = None
         if resp.status_code == 200:
             res = resp.text

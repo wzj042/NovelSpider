@@ -15,7 +15,6 @@ class Chapter:
     author = None
     novelTitle = None
     BAN_TEXT_LIST = []
-    AUTO_SOLVE_TEXT = False
     # 定义多个参数并赋值None实现伪重载
     def __init__(self, inputUrl=None, href=None) -> None:
         # 匹配一下baseUrl
@@ -232,12 +231,6 @@ class Chapter:
                 if "Notice: Undefined index:" in content:
                     self.connect()
                     return
-
-                if self.AUTO_SOLVE_TEXT:
-                    for ban in self.BAN_TEXT_LIST:
-                        if ban in content:
-                            print('替换*1')
-                            content = content.replace(ban, '')
                 
                 print(content)
 
@@ -246,6 +239,8 @@ class Chapter:
                         self.__chapterTitle = '分卷阅读'
                     content = f'\n【{self.__chapterTitle}】\n' + content
 
+                self.author = self.author.replace('\t','')
+                self.author = self.author.replace('\r','')
                 path = 'novel\\' + self.author + '\\'
 
                 if not os.path.exists(path):
