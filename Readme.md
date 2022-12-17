@@ -4,6 +4,7 @@
 
 ```bash
 ── adsolver.py		-- 自定义过滤广告文本
+├── release       -- 如果你只需要使用直接下载该文件夹内容即可
 ├── chapter.py		-- 章节爬取，图片爬取等方法
 ├── chromedriver.exe -- 自动化测试时用的驱动
 ├── config.ini		-- 配置文件
@@ -39,6 +40,7 @@ chrome浏览器输入chrome://version查看版本
 chromedriver.exe放在chrome安装目录下,如C:\Program Files\Google\Chrome\Application\
 
 如果只是想要爬取使用的话
+点击该链接也可下载对应[可执行文件](https://wwi.lanzoup.com/iC0x90ixnrpc)
 
 ​     
 
