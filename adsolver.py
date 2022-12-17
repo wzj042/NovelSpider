@@ -24,7 +24,7 @@ def solveAdText(content) -> str:
     # 将分页的换行替换掉
     symbol = '[…，、•！～。？]'
     notEndSymbol = '[…，、•～]'
-    endSymbol = '[】！。？]'
+    endSymbol = '[】！。？」》]'
     cn = '[\u4e00-\u9fa5]'
 
 
@@ -33,7 +33,9 @@ def solveAdText(content) -> str:
     content = subReplace(cn+'\n+\s*'+cn, content, {
         '\n+\s*':''
     })
-
+    content = subReplace(endSymbol+'?'+'\n+\s*'+cn, content, {
+        '\n+\s*':'\n'
+    })
     adCount = 0
     for ban in BAN_TEXT_LIST:
         if ban in content:
@@ -53,6 +55,7 @@ def solveAdText(content) -> str:
     content = subReplace(cn+'?'+'\n+\s*'+symbol, content, {
         '\n+\s*':''
     })
+    
     # 将替换后的空白行替换掉
     
     content = re.sub('\n{3,}\s','\n',content)
@@ -74,7 +77,7 @@ def solveAd():
                         content += line
                     f.close()
                 content = solveAdText(content)
-                with open(f'{root}\{name}', 'w', encoding='utf-8') as f:
+                with open(f'{root}\{name}_', 'w', encoding='utf-8') as f:
                 # with open(f'{root}\{name}_backup', 'w', encoding='utf-8') as f:
                     f.write(content)
                     f.close()
