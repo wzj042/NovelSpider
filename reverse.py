@@ -1,13 +1,12 @@
 import os
 import hashlib
-import json
-from ujson import getJson, saveJson
+from ujson import load_json, save_json
 
-folder = 'img\original'
-ouput_tmp_json = r'output\text.json'
+folder = r'img\original'
+output_tmp_json = r'output\text.json'
 
 # 获取json 查重
-tmpJson = getJson(ouput_tmp_json)
+tmpJson = load_json(output_tmp_json)
 
 textImgList = []
 
@@ -20,10 +19,10 @@ else:
 files = os.listdir(folder)
 # 添加相应的json
 for fileName in files:
-    if not fileName in textImgList:
+    if fileName not in textImgList:
         print('处理', fileName)
         file = open(f'{folder}\{fileName}', 'rb')
         md5 = hashlib.md5(file.read()).hexdigest()
         tmpJson['texts'].append({'imgName': fileName, 'text': '丰', 'md5': md5})
 
-saveJson(ouput_tmp_json, tmpJson)
+save_json(output_tmp_json, tmpJson)
