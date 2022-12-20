@@ -1,7 +1,14 @@
-import os,json
+import os, json
+
+
 # 封装json操作
 
-def getJson(file_url):
+def load_json(file_url):
+    """
+    加载JSON文件
+    :param file_url:
+    :return:
+    """
     res_json = None
     if not os.path.exists(file_url):
         print('>>json文件不存在')
@@ -16,8 +23,15 @@ def getJson(file_url):
             f.close()
     return res_json
 
-def saveJson(file_url, save_json):
+
+def save_json(file_url, json_content):
+    """
+    保存JSON到文件
+    :param file_url:
+    :param json_content:
+    :return:
+    """
     with open(file_url, 'w', encoding='utf-8') as f:
-        f.write(json.dumps(save_json, ensure_ascii=False, indent=4))
+        f.write(json.dumps(json_content, ensure_ascii=False, indent=4))
         print('>>已更新json文件')
         f.close()
