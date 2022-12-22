@@ -42,7 +42,15 @@ chromedriver.exe放在chrome安装目录下,如C:\Program Files\Google\Chrome\Ap
 如果只是想要爬取使用的话
 点击该链接也可下载对应[可执行文件](https://wwi.lanzoup.com/iC0x90ixnrpc)
 
-​     
+## 三、Feature
+
+最近爬一篇上古文的时候发现第一版主很多插入基本是靠替换同型字和插入符号
+需要改进默认的朴素对比模式，考虑改进正则匹配或者提供网站api在线提交更新solveText(不太可能)
+还有换行分章刚好把插入分行了的就更难办了，换行分章推广这个我还在想怎么处理
+
+
+
+
 
 
 
