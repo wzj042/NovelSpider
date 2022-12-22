@@ -81,14 +81,14 @@ def solve_ad():
     for root, dirs, files in os.walk("novel", topdown=False):
         for name in files:
             if '_backup' not in name:
-                print(files)
+                print(name)
                 content = ''
                 with open(f'{root}\{name}', 'r', encoding='utf-8') as f:
                     for line in f.readlines():
                         content += line
                     f.close()
                 content = solve_ad_text(content)
-                with open(f'{root}\{name}_', 'w', encoding='utf-8') as f:
+                with open(f'{root}\{name}', 'w', encoding='utf-8') as f:
                     # with open(f'{root}\{name}_backup', 'w', encoding='utf-8') as f:
                     f.write(content)
                     f.close()
