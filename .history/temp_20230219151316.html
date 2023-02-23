@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>empty page for js test</title>
+		
+	</head>
+	<body>
+		<script>
+			var fun = function(code){
+				code.replace(/\\x([a-f0-9]{2})/g, function (match_str, group_1) {
+					return String.fromCharCode(parseInt(group_1, 16).toString(10));
+				});
+			}
+		</script>
+		
+	</body>
+</html>

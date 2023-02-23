@@ -1,0 +1,16 @@
+import word_bank
+"""
+    将输入文本中的图片链接替换成相应文本返回
+"""
+
+__all__ = ['img_processor', 'word_bank']
+
+class img_processor :
+    def __init__(self, solve_text = '') -> None:
+        self.__solve_text = solve_text
+        pass
+    def process(self) -> str:
+        self.__solve_text = '乐' + self.__solve_text
+        return self.__solve_text
+
+print(word_bank.words['texts'][0])
