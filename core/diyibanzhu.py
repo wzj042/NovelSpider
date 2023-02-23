@@ -21,7 +21,8 @@ class diyibanzhu:
         """
         spider = novel_spider(url)
         _novel = spider.connect()
-        return spider.parser_novel(_novel)
+        if _novel:
+            return spider.parser_novel(_novel)
         
     
     def get_chpater(self, url:str) -> chapter:
