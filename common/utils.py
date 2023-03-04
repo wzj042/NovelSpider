@@ -1,6 +1,9 @@
 import cloudscraper
 import hashlib
 import re
+# 没想到最后还是得引入requests
+from requests.exceptions import ConnectionError
+
 from common.const import const, static
 from common.logger import logger
 
@@ -40,7 +43,12 @@ def get(url:str = '',  **kwargs):
 
         """捕获常见错误状态码"""
         if code == const.USING_PROXY:
-            raise ConnectionError('访问失败, 请检查是否开启了代理')
+            resp_headers = resp.headers
+            if not resp_headers and 'Server' in resp_headers and resp_headers['Server'] == 'cloudflare':
+                raise ConnectionError('被cloudflare拦截导致访问失败, 请检查是否开启了代理')
+            
+            raise ConnectionError(f'网页需要填写动态验证:\n\n{resp.text}')
+            
         
         if code != const.SUCCESS:
             raise ConnectionError(f'访问失败,[{code}] = {resp.text}')

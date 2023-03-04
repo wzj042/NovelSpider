@@ -32,7 +32,7 @@ class _static:
     """可修改的全局变量"""
     """默认网络参数"""
     base_url = 'http://www.2diyibanzhu.cc'
-    timeout = 15
+    timeout = 3
     headers = {
         'User-Agent' : 'Mozilla/5.0 (Linux; U; Android 10; zh-CN; HLK-AL00 Build/HONORHLK-AL00) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/78.0.3904.108 UCBrowser/13.1.8.1098 Mobile Safari/537.36',
     }
