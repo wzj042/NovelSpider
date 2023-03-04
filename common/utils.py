@@ -47,6 +47,11 @@ def get(url:str = '',  **kwargs):
             if not resp_headers and 'Server' in resp_headers and resp_headers['Server'] == 'cloudflare':
                 raise ConnectionError('被cloudflare拦截导致访问失败, 请检查是否开启了代理')
             
+            """
+            @TODO:预计处理方式为爬取动态验证页面的源码尝试逆向绕过动态验证
+            @TODO:开启代理引发的超时错误还没处理, 暂时设置了较长的timeout绕过
+            """
+
             raise ConnectionError(f'网页需要填写动态验证:\n\n{resp.text}')
             
         
@@ -55,6 +60,7 @@ def get(url:str = '',  **kwargs):
         
     except (ValueError, ConnectionError) as e:
         resp = None
+        logger.info(e.args)
         logger.error(repr(e))
 
     return resp
