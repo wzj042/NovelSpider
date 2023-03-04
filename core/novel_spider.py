@@ -10,6 +10,7 @@ from model import *
 class novel_spider:
 
     __url_parser = None
+    __chpater_len = 0
 
     def __init__(self, url:str = ''):
         """
@@ -43,9 +44,9 @@ class novel_spider:
                     novel_author = infos[0]
                     word_count = infos[2]
                     
-                    """目录页数"""
+                    """目录页数, 此处获取目录页数可能超出2位数"""
                     end_page_href = soup.find('a', class_='endPage').attrs['href']
-                    pattern = re.compile('_(\d)/')
+                    pattern = re.compile('_(\d+)/')
                     page_count = int(pattern.search(end_page_href).groups()[0])
                     
                     _novel = novel(
@@ -57,7 +58,10 @@ class novel_spider:
                         page_count = page_count,
                     )
 
-                    for param in self.get_chapter_list(resp.text):
+                    chapter_list = self.get_chapter_list(resp.text)
+                    self.__chpater_len += len(chapter_list)
+
+                    for param in chapter_list:
                         _chapter = chapter(param[0])
                         _chapter.chpater_name = param[1]
                         _novel.chapters.append(_chapter)
@@ -110,19 +114,25 @@ class novel_spider:
                 time.sleep(const.SLEEP)
 
                 resp = get(page_url)
-                for param in self.get_chapter_list(resp.text):
+                chapter_list = self.get_chapter_list(resp.text)
+                self.__chpater_len += len(chapter_list)
+
+                for param in chapter_list:
                     _chapter = chapter(param[0])
                     _chapter.chapter_name = param[1]
                     _novel.chapters.append(_chapter)
 
                 i += 1
             
+            chpater_index = 1
             for _chapter in _novel.chapters:
                 time.sleep(const.SLEEP)
+                logger.info(f'解析章节{chpater_index}/{self.__chpater_len}')
                 _chapter = self.parse_chapter(_chapter)
+                chpater_index += 1
             
-            for c in _novel.chapters:
-                print(c)
+            # for c in _novel.chapters:
+            #     print(c)
 
         except ValueError as e:
             logger.error(e)
@@ -150,7 +160,6 @@ class novel_spider:
         从parser或传入的chapeter_url中获取章节
         """
         try:
-            logger.info('解析章节...')
             parser = self.__url_parser
 
             if not _chapter:
